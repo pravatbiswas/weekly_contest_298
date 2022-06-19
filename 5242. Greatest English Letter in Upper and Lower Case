@@ -1,0 +1,19 @@
+class Solution:
+    def greatestLetter(self, s: str) -> str:
+        count = {}
+        res = ''
+        for i in range(len(s)):
+            if count.get(s[i].upper(), [0, 0]) == [1, 1]:
+                continue
+            lower, upper = count.get(s[i].upper(), [0, 0])
+            
+            if lower == 0 and s[i].islower():
+                count[s[i].upper()] = [1, upper]
+                
+            if upper == 0 and s[i].isupper():
+                count[s[i].upper()] = [lower, 1]
+                
+        for c in count:
+            if count[c] == [1, 1]:
+                res = max(res, c)
+        return res
