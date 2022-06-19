@@ -1,0 +1,18 @@
+class Solution:
+    def sellingWood(self, m: int, n: int, prices: List[List[int]]) -> int:
+        dictt = collections.defaultdict(dict)
+        for h, w, p in prices :
+            dictt[h][w] = p
+        
+        @functools.lru_cache(None)
+        def solve(h=m, w=n) :
+            to_ret = dictt[h].get(w, 0)
+            
+            for i in range(1, h//2+1) :
+                to_ret = max(to_ret, solve(i, w)+solve(h-i, w))
+            for i in range(1, w//2+1) :
+                to_ret = max(to_ret, solve(h, i)+solve(h, w-i))
+            return to_ret
+        
+        return solve()
+            
